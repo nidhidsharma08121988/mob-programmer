@@ -5,10 +5,19 @@ test('make Elsa participant when Elsa joins mob', () => {
   expect(participantList).toStrictEqual(['Elsa'])
 })
 
+test('make Alex also a participant when Alex joins call', () => {
+  const mob = new Mob()
+  mob.join('Elsa')
+  mob.join('Alex')
+  const participantList = mob.participants()
+  expect(participantList).toStrictEqual(['Elsa', 'Alex'])
+})
 class Mob {
-  join() {}
+  _participants = []
+  join(participant) {
+    this._participants.push(participant)
+  }
   participants() {
-    const participant = ['Elsa']
-    return participant
+    return this._participants
   }
 }
