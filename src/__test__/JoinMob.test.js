@@ -1,3 +1,5 @@
+const Mob = require('../Mob')
+
 test('make Elsa participant when Elsa joins mob', () => {
   const mob = new Mob()
   mob.join('Elsa')
@@ -12,12 +14,3 @@ test('make Alex also a participant when Alex joins call', () => {
   const participantList = mob.participants()
   expect(participantList).toStrictEqual(['Elsa', 'Alex'])
 })
-class Mob {
-  _participants = []
-  join(participant) {
-    this._participants.push(participant)
-  }
-  participants() {
-    return this._participants
-  }
-}
