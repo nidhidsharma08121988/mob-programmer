@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import App from '../App'
+import userEvent from '@testing-library/user-event'
 
 test('renders learn react link', () => {
   renderApp()
@@ -12,15 +13,14 @@ test('must display list of participants', () => {
   const listElement = screen.queryByTestId('participant-list')
   expect(listElement).toBeTruthy()
 })
-test('when Alex, Alexa and Elsa are entered in input they should appear in participant list', () => {
+
+test('when Alex is entered in input it should appear in participant list', () => {
   renderApp()
-  const sampleParticipantList = ['Alex', 'Alexa', 'Elsa']
-  sampleParticipantList.forEach(participant => {
-    const input = screen.getByTestId('participant-input')
-    input.value = `${participant}{Enter}`
-  })
-  const participantList = screen.queryAllByTestId('participant')
-  expect(participantList.length).toBe(sampleParticipantList.length)
+
+  let input = screen.getByTestId('participant-input')
+  userEvent.type(input, 'Alex{enter}')
+
+  expect(screen.getByText('Alex')).toBeVisible()
 })
 
 function renderApp() {
