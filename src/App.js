@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import './App.css'
+import styles from './App.module.css'
 
 const Mob = require('./Mob')
 
@@ -10,6 +10,7 @@ function App() {
 
   useEffect(() => {
     setMob(new Mob())
+    setParticipants([])
   }, [])
 
   const handleEnter = e => {
@@ -22,7 +23,7 @@ function App() {
   }
 
   return (
-    <div className='App'>
+    <div className={styles.App}>
       <input
         data-testid='participant-input'
         value={participant}
