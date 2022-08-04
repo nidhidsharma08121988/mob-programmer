@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import App from '../App'
 
 test('renders learn react link', () => {
@@ -12,9 +12,17 @@ test('must display list of participants', () => {
   const listElement = screen.queryByTestId('participant-list')
   expect(listElement).toBeTruthy()
 })
-
+test('when Alex, Alexa and Elsa are entered in input they should appear in participant list', () => {
+  renderApp()
+  const sampleParticipantList = ['Alex', 'Alexa', 'Elsa']
+  sampleParticipantList.forEach(participant => {
+    const input = screen.getByTestId('participant-input')
+    input.value = `${participant}{Enter}`
+  })
+  const participantList = screen.queryAllByTestId('participant')
+  expect(participantList.length).toBe(sampleParticipantList.length)
+})
 
 function renderApp() {
   render(<App />)
 }
-// test('when Alex joins mob they should appear as a participant', () => {})
