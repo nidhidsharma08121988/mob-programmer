@@ -24,15 +24,20 @@ function App() {
 
   return (
     <div className={styles.App}>
+      <div></div>
       <input
         data-testid='participant-input'
         value={participant}
         onChange={e => setParticipant(e.target.value)}
         onKeyDown={handleEnter}
+        className={styles.input}
+        placeholder='Participant Name...'
       ></input>
-      <div data-testid='participant-list'>
+      <div data-testid='participant-list' className={styles.list}>
         {participants.map((participant, index) => (
-          <li key={index}>{participant}</li>
+          <li key={index} className={styles.item}>
+            {participant}
+          </li>
         ))}
       </div>
     </div>
