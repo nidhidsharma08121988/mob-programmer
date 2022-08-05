@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className={styles.App}>
-      <div></div>
+      <div className={styles.header}>Mob Programming Host</div>
       <input
         data-testid='participant-input'
         value={participant}
