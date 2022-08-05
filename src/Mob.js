@@ -6,6 +6,10 @@ class Mob {
   participants() {
     return this._participants
   }
+  rotate() {
+    const shiftedParticipant = this._participants.shift()
+    this._participants.push(shiftedParticipant)
+  }
 }
 
 module.exports = Mob
