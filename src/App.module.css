@@ -8,29 +8,48 @@
   align-items: center;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 .header {
   width: 100%;
   background-color: darkgoldenrod;
   color: white;
   padding: 0.3rem;
+  font-size: larger;
+}
+.participant_timer {
+  display: flex;
+  align-items: top;
+  margin: 0.3rem;
+  width: 90%;
+  height: 100%;
+}
+.participant_panel {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+  width: 60%;
+  height: 100%;
 }
 .input {
+  top: 60px;
   width: 80%;
   padding: 0.3rem;
   margin: 0.5rem;
+  font-size: 1.2rem;
   border: none;
   outline: none;
 }
 .list {
   display: flex;
-  width: 80%;
   flex-wrap: wrap;
-  align-self: center;
+  padding: 1.5rem;
+  overflow: auto;
 }
 .item {
   display: flex;
   text-align: center;
+  font-size: 1.2rem;
   justify-content: center;
   align-items: center;
   padding: 0px;
@@ -39,4 +58,35 @@
   width: 100px;
   height: 100px;
   box-shadow: 1px 1px 4px lightgray;
+}
+.timer {
+  margin: 3rem;
+  font-size: 2rem;
+}
+.minutes,
+.seconds,
+.colon {
+  margin: 0.5rem;
+  text-align: center;
+  width: 70px;
+  height: 70px;
+  font-size: 2rem;
+  border-radius: 5px;
+}
+.startMob {
+  border: none;
+  margin: 1rem;
+  font-size: 2rem;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 1px 1px 3px lightgray;
+  cursor: pointer;
+  color: darkgoldenrod;
+  transition: all 0.1s ease-in;
+  border-radius: 5px;
+}
+.startMob:hover {
+  background-color: darkgoldenrod;
+  opacity: 0.4;
+  color: white;
 }
