@@ -73,6 +73,14 @@
   font-size: 2rem;
   border-radius: 5px;
 }
+.minutes,
+.seconds {
+  border: 2px solid black;
+}
+.error {
+  font-size: small;
+  color: red;
+}
 .startMob {
   border: none;
   margin: 1rem;
