@@ -1,26 +1,66 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-//takes minutes and seconds (numeric) for countdown
-//and return the updated values of time until we stop timer
-const useCountDown = (initialMinutes, initialSeconds) => {
-  const [minutes, setMinutes] = useState(Number.parseInt(initialMinutes))
-  const [seconds, setSeconds] = useState(Number.parseInt(initialSeconds))
-  const timerID = setInterval(() => {
-    const isTimerExpired = minutes === 0 && seconds === 0
-    if (!isTimerExpired) {
-      if (seconds >= 0) {
-        setMinutes(minutes - 1)
-        setSeconds(59)
-      } else {
-        setSeconds(seconds - 1)
-      }
-    } else {
-      setMinutes(0)
-      setSeconds(0)
+export const countTimeInMs = (minutes, seconds) =>
+  minutes * 60 * 1000 + seconds * 1000
+
+const useCountDown = (initMin, initSec) => {
+  const [minutes, setMinutes] = useState(initMin)
+  const [seconds, setSeconds] = useState(initSec)
+  const [timerID, setTimerID] = useState(0)
+  const [timeInMS, setTimeInMS] = useState(0)
+
+  const clearCountDown = () => {
+    clearInterval(timerID)
+    setMinute(0)
+    setSecond(0)
+  }
+
+  useEffect(() => {
+    setTimeInMS(countTimeInMs(minutes, seconds))
+  }, [minutes, seconds])
+
+  const setMinute = newMin => {
+    setMinutes(newMin)
+  }
+  const setSecond = newSec => {
+    setSeconds(newSec)
+  }
+
+  const startCountDown = () => {
+    const isTimerNotStartedAndMinOrSecAreNonZero =
+      !timerID && (minutes > 0 || seconds > 0)
+
+    if (isTimerNotStartedAndMinOrSecAreNonZero) {
+      const id = setInterval(displayMinutesAndSeconds, 1000)
+      setTimerID(id)
     }
-  }, 1000)
+  }
 
-  return [minutes, seconds, timerID]
+  let counter = 0
+  const displayMinutesAndSeconds = () => {
+    counter = counter + 1
+    const newTimeInMs = timeInMS - 1000 * counter
+    if (newTimeInMs > 0) {
+      const newMin = Math.floor(newTimeInMs / 1000 / 60)
+      const newSec = Math.floor((newTimeInMs / 1000) % 60)
+
+      setMinute(newMin)
+      setSecond(newSec)
+      return
+    } else {
+      clearCountDown()
+      return
+    }
+  }
+
+  return [
+    minutes,
+    setMinute,
+    seconds,
+    setSecond,
+    startCountDown,
+    clearCountDown,
+  ]
 }
 
 export default useCountDown
