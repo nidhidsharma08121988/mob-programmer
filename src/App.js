@@ -1,86 +1,99 @@
 import { useState, useEffect } from 'react'
 import styles from './App.module.css'
+import useTimer from './useTimer'
 
 const Mob = require('./Mob')
 
 function App() {
   const [mob, setMob] = useState(null)
-  const [minutes, setMinutes] = useState('15')
-  const [seconds, setSeconds] = useState('00')
   const [participant, setParticipant] = useState('')
-  const [participants, setParticipants] = useState([])
-  const [isDisabled, setIsDisabled] = useState(false)
+  const [
+    minutes,
+    setMinutes,
+    seconds,
+    setSeconds,
+    timeInMs,
+    isTimerOn,
+    startTimer,
+  ] = useTimer()
 
   useEffect(() => {
-    setMob(new Mob())
-    setParticipants([])
-  }, [])
+    if (!mob) setMob(new Mob())
+  }, [mob])
 
   const handleEnter = e => {
-    if (e.key === 'Enter') {
-      mob.join(participant)
-      setParticipant('')
-      const newParticipants = [...participants, participant]
-      setParticipants(newParticipants)
+    if (mob) {
+      if (e.key === 'Enter') {
+        mob.join(participant)
+        setParticipant('')
+      }
     }
   }
 
   const handleMobbing = e => {
-    //start timer for set minutes and seconds
-    //disable the inputs
-    //convert start mob to reset button
-    //after that time expires: clear the timer and rotate mob
+    if (!isTimerOn) {
+      startTimerAndTimeout()
+    }
   }
+
+  const participantPanel = (
+    <div className={styles.participant_panel}>
+      <input
+        data-testid='participant-input'
+        value={participant}
+        onChange={e => setParticipant(e.target.value)}
+        onKeyDown={handleEnter}
+        className={styles.input}
+        placeholder='Participant Name...'
+      ></input>
+      <div data-testid='participant-list' className={styles.list}>
+        {mob &&
+          mob.participants().map((participant, index) => (
+            <li key={index} className={styles.item}>
+              {participant}
+            </li>
+          ))}
+      </div>
+    </div>
+  )
 
   return (
     <div className={styles.App}>
       <div className={styles.header}>Mob Programming Host</div>
       <div className={styles.participant_timer}>
-        <div className={styles.participant_panel}>
-          <input
-            data-testid='participant-input'
-            value={participant}
-            onChange={e => setParticipant(e.target.value)}
-            onKeyDown={handleEnter}
-            className={styles.input}
-            placeholder='Participant Name...'
-          ></input>
-          <div data-testid='participant-list' className={styles.list}>
-            {participants.map((participant, index) => (
-              <li key={index} className={styles.item}>
-                {participant}
-              </li>
-            ))}
-          </div>
-        </div>
+        {participantPanel}
         <div className={styles.timer}>
           <div>
             <input
               className={styles.minutes}
-              value={minutes}
               placeholder='00'
               type='number'
-              onChange={e => setMinutes(e.target.value)}
               maxLength={2}
-              min='00'
-              max='20'
-              disabled={isDisabled}
+              value={minutes}
+              onChange={e => setMinutes(e.target.value)}
+              min='0'
+              max='15'
+              disabled={isTimerOn}
             ></input>
             <label className={styles.colon}>:</label>
             <input
               className={styles.seconds}
-              value={seconds}
               placeholder='00'
               type='number'
-              onChange={e => setSeconds(e.target.value)}
               maxLength={2}
-              min='00'
+              value={seconds}
+              onChange={e => setSeconds(e.target.value)}
+              min='0'
               max='59'
-              disabled={isDisabled}
+              disabled={isTimerOn}
             ></input>
           </div>
           <div>
-            <button className={styles.startMob} onClick={handleMobbing}>
+            <button
+              className={styles.startMob}
+              onClick={handleMobbing}
+              disabled={isTimerOn}
+            >
               Start Mob
             </button>
           </div>
@@ -88,6 +101,13 @@ function App() {
       </div>
     </div>
   )
+
+  function startTimerAndTimeout() {
+    startTimer()
+    setTimeout(() => {
+      mob.rotate()
+    }, timeInMs)
+  }
 }
 
 export default App
