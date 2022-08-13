@@ -89,13 +89,11 @@ function App() {
             ></input>
           </div>
           <div>
-            <button
-              className={styles.startMob}
-              onClick={handleMobbing}
-              disabled={isTimerOn}
-            >
-              Start Mob
-            </button>
+            {!isTimerOn && (
+              <button className={styles.startMob} onClick={handleMobbing}>
+                Start Mob
+              </button>
+            )}
           </div>
         </div>
       </div>
