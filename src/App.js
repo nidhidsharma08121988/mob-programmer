@@ -1,5 +1,5 @@
+import './App.css'
 import { useState, useEffect } from 'react'
-import styles from './App.module.css'
 import useTimer from './useTimer'
 
 const Mob = require('./Mob')
@@ -37,20 +37,24 @@ function App() {
   }
 
   const participantPanel = (
-    <div className={styles.participant_panel}>
+    <div className='participant_panel'>
       <input
         data-testid='participant-input'
         value={participant}
         onChange={e => setParticipant(e.target.value)}
         onKeyDown={handleEnter}
-        className={styles.input}
+        className='input'
         placeholder='Participant Name...'
       ></input>
-      <div data-testid='participant-list' className={styles.list}>
+      <div data-testid='participant-list' className='list'>
         {mob &&
           mob.participants().map((participant, index) => (
-            <li key={index} className={styles.item}>
-              {participant}
+            <li key={index} className={`item item_${index}`}>
+              {index === 0 && <div style={{ fontSize: 'x-small' }}>Driver</div>}
+              {index === 1 && (
+                <div style={{ fontSize: 'x-small' }}>Navigator</div>
+              )}
+              <div className='participant-name'>{participant}</div>
             </li>
           ))}
       </div>
@@ -58,14 +62,14 @@ function App() {
   )
 
   return (
-    <div className={styles.App}>
-      <div className={styles.header}>Mob Programming Host</div>
-      <div className={styles.participant_timer}>
+    <div className='App'>
+      <div className='header'>Mob Programming Host</div>
+      <div className='participant_timer'>
         {participantPanel}
-        <div className={styles.timer}>
+        <div className='timer'>
           <div>
             <input
-              className={styles.minutes}
+              className='minutes'
               placeholder='00'
               type='number'
               maxLength={2}
@@ -75,9 +79,9 @@ function App() {
               max='15'
               disabled={isTimerOn}
             ></input>
-            <label className={styles.colon}>:</label>
+            <label className='colon'>:</label>
             <input
-              className={styles.seconds}
+              className='seconds'
               placeholder='00'
               type='number'
               maxLength={2}
@@ -90,7 +94,7 @@ function App() {
           </div>
           <div>
             {!isTimerOn && (
-              <button className={styles.startMob} onClick={handleMobbing}>
+              <button className='startMob' onClick={handleMobbing}>
                 Start Mob
               </button>
             )}
